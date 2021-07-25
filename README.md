@@ -9,8 +9,9 @@
 `git pull`将github上别人push的代码拉来自己的电脑
 
 ## 使用的库
-*ESP8266
-*NTPClient
+* ESP8266
+* NTPClient
+
 ## Function任务清单(MVP)
 
 ### 硬件实现清单
