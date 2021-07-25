@@ -10,8 +10,8 @@
 
 
 //此处输入wifi名和wifi密码
-const char* ssid       = "Leong Home@unifi";//wifi名
-const char* password   = "0129405519";//wifi密码
+const char* ssid       = "YOUR_SSID";//wifi名
+const char* password   = "YOUR_PWD";//wifi密码
 
 #define interval 1000 //以ms为单位检查现在的时间
 
