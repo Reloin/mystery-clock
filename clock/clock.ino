@@ -26,7 +26,7 @@ NTPClient timeClient(ntpUDP, "asia.pool.ntp.org");
 ESP8266Timer ITimer;
 
 int hour, minute,pos,idle=0,screen=0,alarm_status=0,alarm_h=0,alarm_m=0,b=1,flagh=0;
-const int Ry=0,button=2;
+const int Ry=A0,button=D0;
 unsigned long stime;
 String temph, tempm;
 
@@ -161,7 +161,7 @@ void loop()
       do {
           draw(2);
       } while( u8g.nextPage() );
-      attachInterrupt(0,setalarm,LOW);
+      attachInterrupt(digitalPinToInterrupt(16),setalarm,LOW);
     }
     else if (screen==2){
        u8g.firstPage();  
@@ -170,7 +170,7 @@ void loop()
         } while( u8g.nextPage() );
     }
     else if (screen=3){
-     detachInterrupt(0);
+     detachInterrupt(digitalPinToInterrupt(16));
      do{
       if(pos!=0){
        if(alarm_status==0) alarm_status=1;
