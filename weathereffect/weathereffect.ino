@@ -35,7 +35,7 @@ void weatherswitch(int weather){
           rgb(255, 255, 0);
           delay(10);
           rgb(25, 51, 77);
-          delay(2500)
+          delay(2500);
           break;
     case 5://下雪
           rgb(204, 255, 255);
@@ -54,3 +54,5 @@ void weatherswitch(int weather){
     default: break;
   }
 }
+
+void loop(){}
