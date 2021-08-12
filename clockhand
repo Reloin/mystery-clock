@@ -1,16 +1,15 @@
-#include <Stepper.h>
-#include<TimerOne.h>
+#include "Stepper.h"
+#include "ESP8266TimerInterrupt.h"
 #define Stepper_pin1 D3
 #define Stepper_pin2 D4
 #define Stepper_pin3 D5
 #define Stepper_pin4 D6
 const int stepsPerRevolution = 50;
 Stepper Minhand(stepsPerRevolution,Stepper_pin1,Stepper_pin2,Stepper_pin3,Stepper_pin4);
-
+Esp8266Timer ITimer
 void setup() {
   Serial.begin(9600);
-  Timer1.initialize(18000000); //18s
-  Timer1.attachInterrupt(Isr);
+  ITimer.attachInterruptInterval(18000000, Isr);
 }
 void Isr(){
     Minhand.step(1);
