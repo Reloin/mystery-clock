@@ -6,9 +6,9 @@
 #define Stepper_pin4 D6
 const int stepsPerRevolution = 50;
 Stepper Minhand(stepsPerRevolution,Stepper_pin1,Stepper_pin2,Stepper_pin3,Stepper_pin4);
-Esp8266Timer ITimer
+ESP8266Timer ITimer;
 void setup() {
-  Serial.begin(9600);
+  Minhand.setSpeed(60);
   ITimer.attachInterruptInterval(18000000, Isr);
 }
 void Isr(){
