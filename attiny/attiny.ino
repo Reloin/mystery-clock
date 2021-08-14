@@ -60,25 +60,52 @@ void song(int n){
 
             };
 
-           double noteDurations[] = {
+            double noteDurations[] = {
 
-          4,4,4,4,4,4,2,4,4,2,4,(4/3),
-            4,4,4,4,4,4,2,4,4,2,4,1
-          }; 
-          for (int thisNote = 0; thisNote <24; thisNote++) {
+            4,4,4,4,4,4,2,4,4,2,4,(4/3),
+              4,4,4,4,4,4,2,4,4,2,4,1
+            }; 
+            for (int thisNote = 0; thisNote <24; thisNote++) {
 
-          double noteDuration = 800/ noteDurations[thisNote];
+            double noteDuration = 800/ noteDurations[thisNote];
 
-          tone(pin_buzzer, melody[thisNote], noteDuration);
-            
-          int pauseBetweenNotes = noteDuration * 1.30;
+            tone(pin_buzzer, melody[thisNote], noteDuration);
 
-          delay(pauseBetweenNotes);
+            int pauseBetweenNotes = noteDuration * 1.30;
 
-          noTone(pin_buzzer);
+            delay(pauseBetweenNotes);
 
-          }
-      break;
+            noTone(pin_buzzer);
+
+            }
+            break;
+    case 5://认真的雪薛之谦
+            int melody[] = {
+
+              NOTE_G5,NOTE_G5,NOTE_G5,NOTE_A5,NOTE_C6,NOTE_E6,NOTE_G5,NOTE_G5,NOTE_G5,NOTE_A5,NOTE_C6,NOTE_D6,
+              NOTE_D6,0,NOTE_D6,NOTE_E6,NOTE_D6,NOTE_D6,NOTE_C6,NOTE_C6,NOTE_C6,NOTE_C6,NOTE_C6,NOTE_G6,NOTE_E6
+
+            };
+
+            double noteDurations[] = {
+
+            4,4,4,4,4,4/3,4,4,4,4,4,4,
+               1,4,4,4,4,4,4,4,4,4,4,4,2,1
+            };
+            for (int thisNote = 0; thisNote <25; thisNote++) {
+
+            double noteDuration = 800/ noteDurations[thisNote];
+
+            tone(pin_buzzer, melody[thisNote], noteDuration);
+
+            int pauseBetweenNotes = noteDuration * 1.30;
+
+            delay(pauseBetweenNotes);
+
+            noTone(pin_buzzer);
+
+            }
+            break;
 
       
     default:break;
