@@ -1,5 +1,36 @@
 #include "pitches.h"
+void song(int n){
+  switch(n){
+    case 1:
+            int melody[] = {//周杰伦晴天 for 晴天
+                            NOTE_B5,NOTE_A5,NOTE_C6,NOTE_B5,NOTE_G5,NOTE_D6,NOTE_FS6,NOTE_G6,NOTE_FS6,NOTE_B5,NOTE_G5,
+                            NOTE_G5,NOTE_E6,NOTE_E6,0,NOTE_E6,NOTE_D6,NOTE_D6,NOTE_D6,NOTE_C6,NOTE_B5,NOTE_A5,NOTE_B5,NOTE_C6,NOTE_B5
+                          };
 
+            int noteDurations[] = {
+
+              2,2,2,1,2,2,2,2,2,2,1,
+              2,2,2,2,2,2,1,2,2,2,2,2,2,1
+            };
+            for (int thisNote = 0; thisNote < 25; thisNote++) {
+
+            int noteDuration = 500 / noteDurations[thisNote];
+
+            tone(pin_buzzer, melody[thisNote], noteDuration);
+
+            int pauseBetweenNotes = noteDuration * 1.30;
+
+            delay(pauseBetweenNotes);
+
+            noTone(pin_buzzer);
+
+            }
+            break;
+      
+    default:break;
+  }
+  
+}
 // notes in the melody:
 int melody[] = {
   NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
