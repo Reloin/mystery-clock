@@ -26,6 +26,33 @@ void song(int n){
 
             }
             break;
+    case 2:
+            int melody[] = {//别找我麻烦蔡健雅
+
+              NOTE_G5,NOTE_F5,NOTE_G5,NOTE_F5,NOTE_G5,NOTE_F5,NOTE_G5,
+              0,NOTE_B6,NOTE_G5,NOTE_F5,NOTE_G5,NOTE_F5,NOTE_G5,NOTE_F5,NOTE_E5,NOTE_E5,NOTE_E5,NOTE_F5
+
+            };
+
+            int noteDurations[] = {
+
+            2,2,2,2,2,4,4,2,4,2,2,2,2,4,2,4,2,2,1
+            };
+            for (int thisNote = 0; thisNote <19; thisNote++) {
+
+            int noteDuration = 500 / noteDurations[thisNote];
+
+            tone(pin_buzzer, melody[thisNote], noteDuration);
+            int pauseBetweenNotes = noteDuration * 1.30;
+
+            delay(pauseBetweenNotes);
+
+            noTone(pin_buzzer);
+
+          }
+          break;
+    case 3:
+
       
     default:break;
   }
