@@ -43,6 +43,7 @@ void song(int n){
             int noteDuration = 500 / noteDurations[thisNote];
 
             tone(pin_buzzer, melody[thisNote], noteDuration);
+              
             int pauseBetweenNotes = noteDuration * 1.30;
 
             delay(pauseBetweenNotes);
@@ -52,6 +53,32 @@ void song(int n){
           }
           break;
     case 3:
+           int melody[] = {//冰雨刘德华
+
+              NOTE_G5,NOTE_G5,NOTE_C6,NOTE_A5,NOTE_G5,NOTE_A5,NOTE_G5,NOTE_G5,NOTE_G5,NOTE_G5,NOTE_E5,NOTE_G5,
+              NOTE_G5,NOTE_G5,NOTE_C6,NOTE_A5,NOTE_G5,NOTE_A5,NOTE_G5,NOTE_G5,NOTE_G5,NOTE_G5,NOTE_D5,NOTE_E5
+
+            };
+
+           double noteDurations[] = {
+
+          4,4,4,4,4,4,2,4,4,2,4,(4/3),
+            4,4,4,4,4,4,2,4,4,2,4,1
+          }; 
+          for (int thisNote = 0; thisNote <24; thisNote++) {
+
+          double noteDuration = 800/ noteDurations[thisNote];
+
+          tone(pin_buzzer, melody[thisNote], noteDuration);
+            
+          int pauseBetweenNotes = noteDuration * 1.30;
+
+          delay(pauseBetweenNotes);
+
+          noTone(pin_buzzer);
+
+          }
+      break;
 
       
     default:break;
