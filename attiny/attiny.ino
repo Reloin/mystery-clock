@@ -90,21 +90,34 @@ void song(){
  }
 
 void loop(){
-    int action = digitalRead(input);
-    switch (action)
+    //read pwm high time
+    float val = pulseIn(input, HIGH);
+    //convert to 10-bit and remove last 2 digits
+    switch (int(val * 10.23 / 2000))
     {
     case 1:
-        song();
-        break;
-    
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    case 5:
+      break;
+    case 6:
+      break;
+    case 7:
+      break;
+    case 8:
+      break;
+    case 9:
+      break;
+    case 10:
+      break;
     default:
-        for (int i = 0; i < 4; i++)
-        {
-            //set all pins to low
-            digitalWrite(i, LOW);
-        }
-        
-        break;
+      break;
     }
+    
 
 }
