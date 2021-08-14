@@ -19,13 +19,13 @@ Ticker ticker;
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0,3,5,4);  //scl=5,sda=4
 
 //此处输入wifi名和wifi密码
-const char* ssid       = "Chong1";//wifi名
-const char* password   = "A1771442";//wifi密码
+const char* ssid       = "Leong Home@unifi";//wifi名
+const char* password   = "0129405519";//wifi密码
 
 #define interval 1000 //以ms为单位检查现在的时间
 
 //Define pins for stepper motor
-#define Stepper_pin1 D3
+#define Stepper_pin1 D0
 #define Stepper_pin2 D4
 #define Stepper_pin3 D5
 #define Stepper_pin4 D6
@@ -51,7 +51,7 @@ ESP8266Timer ITimer;
 int hour, minute,temp,degree,pos,idle=0,screen=0,alarm_status=0,alarm_h=0,alarm_m=0,b=1,flagh=0;
 String weather,temph, tempm;
 uint8_t symbol,t_symbol;
-const int Ry=A0,button=13,beep=15;
+const int Ry=A0,button=13,beep=0;
 unsigned long stime,timebudget;
 static bool powerSave=false;
 
@@ -499,5 +499,3 @@ void loop() {
   }
 
 }
-
-
