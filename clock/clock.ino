@@ -308,7 +308,7 @@ void ICACHE_RAM_ATTR setalarm(){
   draw(3);
 }
 void alarm(){
-  digitalWrite(beep,HIGH);
+  analogWrite(beep, 252);
   delay(500);
   digitalWrite(beep,LOW);
   delay(1000);
