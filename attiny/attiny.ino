@@ -81,7 +81,7 @@ void rain(){
 
   }
 }
-
+/*
 //5雪
 void snow(){
   int melody[] = {
@@ -108,27 +108,27 @@ void snow(){
     noTone(pin_buzzer);
 
   }
-}
+}*/
 
 //melody for alarm
 void alarm(){
   int melody[] = {
-    NOTE_G3,NOTE_G3,NOTE_G3,NOTE_DS3,NOTE_AS3,
-    NOTE_D3,NOTE_D3,NOTE_D3,NOTE_DS3,NOTE_AS3,NOTE_FS3,NOTE_DS3,NOTE_G3
+    NOTE_G3,NOTE_G3,NOTE_G3,NOTE_DS3,NOTE_AS3,NOTE_G3,NOTE_DS3,NOTE_AS3,NOTE_G3,
+    NOTE_D4,NOTE_D4,NOTE_D4,NOTE_DS4,NOTE_AS3,NOTE_FS3,NOTE_DS3,NOTE_AS3,NOTE_G3
   };
 
   double noteDurations[] = {
-    4,4,4,8/3,8,4,8/3,8,
-    4,4,4,8/3,8,4,8/3,8,2
+    4,4,4,16/3,16,4,16/3,16,2,
+    4,4,4,16/3,16,4,16/3,16,2
   };
 
-  for (int thisNote = 0; thisNote <25; thisNote++) {
+  for (int thisNote = 0; thisNote <18; thisNote++) {
 
     double noteDuration = 800/ noteDurations[thisNote];
 
     tone(pin_buzzer, melody[thisNote], noteDuration);
 
-    int pauseBetweenNotes = noteDuration * 1.30;
+    int pauseBetweenNotes = noteDuration * 2.0;
 
     delay(pauseBetweenNotes);
 
@@ -141,12 +141,12 @@ void alarm(){
 void setup() {
   // put your setup code here, to run once:
   pinMode(input, INPUT);
-  pinMode(speaker, OUTPUT);
+  pinMode(pin_buzzer, OUTPUT);
   pinMode(red,OUTPUT);
   pinMode(green,OUTPUT);
   pinMode(blue,OUTPUT);
 }
-
+/*
 void rgb(int r,int g,int b){
   analogWrite(red, 255 - r);
   analogWrite(green, 255 - g);
@@ -198,7 +198,7 @@ void weatherswitch(int weather){
     break;
   }
 }
-
+*/
 void loop(){
     //read pwm high time
     float val = pulseIn(input, HIGH);
@@ -217,7 +217,7 @@ void loop(){
     case 4:
       break;
     case 5:
-      snow();
+      //snow();
       break;
     case 6:
       break;
@@ -226,6 +226,7 @@ void loop(){
     case 8:
       break;
     case 9:
+      alarm();
       break;
     case 10:
       alarm();
