@@ -15,7 +15,7 @@ void sunny(){
   };
   for (int thisNote = 0; thisNote < 25; thisNote++) {
 
-    int noteDuration = 500 / noteDurations[thisNote];
+    double noteDuration = 500 / noteDurations[thisNote];
 
     tone(pin_buzzer, melody[thisNote], noteDuration);
 
@@ -26,6 +26,7 @@ void sunny(){
     noTone(pin_buzzer);
 
   }
+  delay(1000);
 }
 
 //2阴
@@ -43,7 +44,7 @@ void cloudy(){
   };
   for (int thisNote = 0; thisNote <19; thisNote++) {
 
-    int noteDuration = 500 / noteDurations[thisNote];
+    double noteDuration = 500 / noteDurations[thisNote];
 
     tone(pin_buzzer, melody[thisNote], noteDuration);
       
@@ -54,6 +55,7 @@ void cloudy(){
     noTone(pin_buzzer);
 
   }
+  delay(1000);
 }
 
 //3雨
@@ -64,12 +66,12 @@ void rain(){
   };
 
   double noteDurations[] = {
-  4,4,4,4,4,4,2,4,4,2,4,(4/3),
+  4,4,4,4,4,4,2,4,4,2,4,4/3,
     4,4,4,4,4,4,2,4,4,2,4,1
   }; 
   for (int thisNote = 0; thisNote <24; thisNote++) {
 
-    double noteDuration = 800/ noteDurations[thisNote];
+    double noteDuration = 500 / noteDurations[thisNote];
 
     tone(pin_buzzer, melody[thisNote], noteDuration);
 
@@ -80,6 +82,7 @@ void rain(){
     noTone(pin_buzzer);
 
   }
+  delay(1000);
 }
 /*
 //5雪
@@ -135,6 +138,7 @@ void alarm(){
     noTone(pin_buzzer);
 
   }
+  delay(1000);
 }
 
 
@@ -219,13 +223,15 @@ void loop(){
       break;
     case 5:
       //snow();
-      sunny();
       break;
     case 6:
+      rain();
       break;
     case 7:
+      cloudy();
       break;
     case 8:
+      sunny();
       break;
     case 9:
       alarm();
@@ -240,6 +246,4 @@ void loop(){
       digitalWrite(blue, HIGH);
       break;
     }
-    
-
 }
