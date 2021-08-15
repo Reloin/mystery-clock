@@ -215,9 +215,11 @@ void loop(){
       rain();
       break;
     case 4:
+      sunny();
       break;
     case 5:
       //snow();
+      sunny();
       break;
     case 6:
       break;

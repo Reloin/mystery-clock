@@ -110,18 +110,33 @@ void drawWeatherSymbol(u8g2_uint_t x, u8g2_uint_t y, uint8_t symbol)
     case SUN:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 69);  
+      analogWrite(beep, 235);// 235 correspond to 1xx in 10-bit, remove last 2 digits
+      delay(50);
+      digitalWrite(beep,LOW);
       break;
     case SUN_CLOUD:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 65); 
+      //signal attiny to play melody
+      analogWrite(beep, 235);// 235 correspond to 1xx in 10-bit, remove last 2 digits
+      delay(50);
+      digitalWrite(beep,LOW);
       break;
     case CLOUD:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 64); 
+      //signal attiny to play melody
+      analogWrite(beep, 215);// 215 correspond to 2xx in 10-bit, remove last 2 digits
+      delay(50);
+      digitalWrite(beep,LOW);
       break;
     case RAIN:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 67); 
+      //signal attiny to play melody
+      analogWrite(beep, 185);// 83 correspond to 3xx in 10-bit, remove last 2 digits
+      delay(50);
+      digitalWrite(beep,LOW);
       break;
     case THUNDER:
       u8g2.setFont(u8g2_font_open_iconic_embedded_4x_t);
