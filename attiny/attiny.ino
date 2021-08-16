@@ -205,9 +205,9 @@ void weatherswitch(int weather){
 */
 void loop(){
     //read pwm high time
-    float val = pulseIn(input, HIGH);
+    int val = pulseIn(input, HIGH) / 100;
     //convert to 10-bit and remove last 2 digits
-    switch (int(val * 10.23 / 2000))
+    switch (val)
     {
     case 1:
       sunny();
@@ -219,22 +219,17 @@ void loop(){
       rain();
       break;
     case 4:
-      sunny();
       break;
     case 5:
       //snow();
       break;
     case 6:
-      rain();
       break;
     case 7:
-      cloudy();
       break;
     case 8:
-      sunny();
       break;
     case 9:
-      alarm();
       break;
     case 10:
       alarm();

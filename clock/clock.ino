@@ -46,7 +46,6 @@ unsigned long lastTime = 0;
 unsigned long timerDelay = 15*60*1000; //检查天气频率(ms)(15分钟)
 String jsonBuffer;
 
-ESP8266Timer ITimer;
 
 int hour, minute,temp,degree,pos,idle=0,screen=0,alarm_status=0,alarm_h=0,alarm_m=0,b=1,flagh=0;
 String weather,temph, tempm;
@@ -98,6 +97,13 @@ uint8_t getSymbol(String weather_icon)
     return MIST; //雾
 }
 
+void triggerMelody(int t)
+{
+  digitalWrite(beep, HIGH);
+  delayMicroseconds(t * 100 + 50);// remove last 2 digits, corresp to 10
+  digitalWrite(beep,LOW);
+}
+
 void drawWeatherSymbol(u8g2_uint_t x, u8g2_uint_t y, uint8_t symbol)
 {
   // fonts used:
@@ -110,33 +116,25 @@ void drawWeatherSymbol(u8g2_uint_t x, u8g2_uint_t y, uint8_t symbol)
     case SUN:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 69);  
-      analogWrite(beep, 235);// 235 correspond to 1xx in 10-bit, remove last 2 digits
-      delay(50);
-      digitalWrite(beep,LOW);
+      triggerMelody(1);
       break;
     case SUN_CLOUD:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 65); 
       //signal attiny to play melody
-      analogWrite(beep, 235);// 235 correspond to 1xx in 10-bit, remove last 2 digits
-      delay(50);
-      digitalWrite(beep,LOW);
+      triggerMelody(1);
       break;
     case CLOUD:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 64); 
       //signal attiny to play melody
-      analogWrite(beep, 215);// 215 correspond to 2xx in 10-bit, remove last 2 digits
-      delay(50);
-      digitalWrite(beep,LOW);
+      triggerMelody(2);
       break;
     case RAIN:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 67); 
       //signal attiny to play melody
-      analogWrite(beep, 185);// 83 correspond to 3xx in 10-bit, remove last 2 digits
-      delay(50);
-      digitalWrite(beep,LOW);
+      triggerMelody(3);
       break;
     case THUNDER:
       u8g2.setFont(u8g2_font_open_iconic_embedded_4x_t);
@@ -323,9 +321,7 @@ void ICACHE_RAM_ATTR setalarm(){
   draw(3);
 }
 void alarm(){
-  analogWrite(beep, 252);
-  delay(500);
-  digitalWrite(beep,LOW);
+  triggerMelody(10);
   delay(1000);
   b=digitalRead(button);
 }
