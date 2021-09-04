@@ -30,11 +30,11 @@ void Clockset(){
   if(hour<6||(hour==6&&minute==0)){
     motor.setSpeed(120);
     minute+=(hour*60);
-    set_duration_min=minute/36; //every 36mins move of minute hand consume 1 min
-    set_duration_sec=minute%36;
-    if(set_duration_sec<12) set_duration_sec=0;
-    else if(set_duration_sec==12&&set_duration_sec<24) set_duration_sec=1;
-    else if(set_duration_sec==24&&set_duration_sec<36) set_duration_sec=2;
+    set_duration_min=minute/30; //every 30mins move of minute hand consume 1 min
+    set_duration_sec=minute%30;
+    if(set_duration_sec<10) set_duration_sec=1;
+    else if(set_duration_sec==10&&set_duration_sec<20) set_duration_sec=2;
+    else if(set_duration_sec==20&&set_duration_sec<30) set_duration_sec=3;
     
     if(minute%3==0) step_need=(minute/3*10)+set_duration_min*3+set_duration_sec;
     else if(minute%3==1) step_need=(minute/3*10)+set_duration_min*3+set_duration_sec+3;
@@ -45,11 +45,11 @@ void Clockset(){
     motor.setSpeed(-120); //reverse
     hour-=6;
     minute=360-(hour*60+minute);
-    set_duration_min=minute/36;
-    set_duration_sec=minute%36;
-    if(set_duration_sec<12) set_duration_sec=0;
-    else if(set_duration_sec==12&&set_duration_sec<24) set_duration_sec=1;
-    else if(set_duration_sec==24&&set_duration_sec<36) set_duration_sec=2;
+    set_duration_min=minute/30; //every 30mins move of minute hand consume 1 min
+    set_duration_sec=minute%30;
+    if(set_duration_sec<10) set_duration_sec=1;
+    else if(set_duration_sec==10&&set_duration_sec<20) set_duration_sec=2;
+    else if(set_duration_sec==20&&set_duration_sec<30) set_duration_sec=3;
     
     if(minute%3==0) step_need=(minute/3*10)+set_duration_min*3+set_duration_sec;
     else if(minute%3==1) step_need=(minute/3*10)+set_duration_min*3+set_duration_sec+3;
