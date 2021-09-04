@@ -27,6 +27,7 @@ void Clockset(){
   timeClient.update();
   hour=timeClient.gerHours();
   minute=timeClient.getMinutes();
+  hour=hour%12;
   if(hour<6||(hour==6&&minute==0)){
     motor.setSpeed(120);
     minute+=(hour*60);
