@@ -70,22 +70,31 @@ static bool powerSave=false;
 uint8_t getSymbol(String weather_icon)
 {
   // clear sky
-  if (weather_icon == "01d")
+  if (weather_icon == "01d"){
+    triggerMelody(1);
     return SUN;
+    }
   if (weather_icon == "01n")
     return MOON;
   //few clouds
-  if (weather_icon == "02d" || weather_icon == "03d" || weather_icon == "04d")
+  if (weather_icon == "02d" || weather_icon == "03d" || weather_icon == "04d"){
+    triggerMelody(1);
     return SUN_CLOUD;
+    }
   //broken clouds
-  if (weather_icon=="02n" || weather_icon == "03n" || weather_icon == "04n")
+  if (weather_icon=="02n" || weather_icon == "03n" || weather_icon == "04n"){
+    triggerMelody(2);
     return CLOUD;
+    }
   //shower rain
   if (weather_icon == "10d" || weather_icon == "10n")
     return RAIN;
   //rain
-  if (weather_icon == "09d" || weather_icon == "09n")
+  if (weather_icon == "09d" || weather_icon == "09n"){
+    //signal attiny to play melody
+    triggerMelody(3);
     return RAIN;
+    }
   //thunderstorm
   if (weather_icon == "11d" || weather_icon == "11n")
     return THUNDER; //雷
@@ -116,25 +125,18 @@ void drawWeatherSymbol(u8g2_uint_t x, u8g2_uint_t y, uint8_t symbol)
     case SUN:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 69);  
-      triggerMelody(1);
       break;
     case SUN_CLOUD:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 65); 
-      //signal attiny to play melody
-      triggerMelody(1);
       break;
     case CLOUD:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 64); 
-      //signal attiny to play melody
-      triggerMelody(2);
       break;
     case RAIN:
       u8g2.setFont(u8g2_font_open_iconic_weather_4x_t);
       u8g2.drawGlyph(x, y, 67); 
-      //signal attiny to play melody
-      triggerMelody(3);
       break;
     case THUNDER:
       u8g2.setFont(u8g2_font_open_iconic_embedded_4x_t);
