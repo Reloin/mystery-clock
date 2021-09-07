@@ -66,6 +66,7 @@ void Clockset(){
     
   }
   else{
+    motor.setSpeed(60)
     h-=6;
     m=360-(h*60+m);
     set_duration_min=m/15; //every 15mins move of minute hand consume 1 min
