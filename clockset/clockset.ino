@@ -52,13 +52,13 @@ void Clockset(){
   Serial.printf("time: %d : %d \n", h, m);
   h=h%12;
   if(h<6||(h==6&&m==0)){
-    motor.setSpeed(120);
+    motor.setSpeed(60);
     m+=(h*60);
-    set_duration_min=m/30; //every 30mins move of minute hand consume 1 min
-    set_duration_sec=m%30;
-    if(set_duration_sec<10) set_duration_sec=1;
-    else if(set_duration_sec==10&&set_duration_sec<20) set_duration_sec=2;
-    else if(set_duration_sec==20&&set_duration_sec<30) set_duration_sec=3;
+    set_duration_min=m/15; //every 15mins move of minute hand consume 1 min
+    set_duration_sec=m%15;
+    if(set_duration_sec<5) set_duration_sec=1;
+    else if(set_duration_sec==5&&set_duration_sec<10) set_duration_sec=2;
+    else if(set_duration_sec==10&&set_duration_sec<15) set_duration_sec=3;
     
     if(m%3==0) step_need=(m/3*10)+set_duration_min*3+set_duration_sec;
     else if(m%3==1) step_need=(m/3*10)+set_duration_min*3+set_duration_sec+3;
@@ -66,18 +66,18 @@ void Clockset(){
     
   }
   else{
-    //motor.setSpeed(-120); //reverse
     h-=6;
     m=360-(h*60+m);
-    set_duration_min=m/30; //every 30mins move of minute hand consume 1 min
-    set_duration_sec=m%30;
-    if(set_duration_sec<10) set_duration_sec=1;
-    else if(set_duration_sec==10&&set_duration_sec<20) set_duration_sec=2;
-    else if(set_duration_sec==20&&set_duration_sec<30) set_duration_sec=3;
+    set_duration_min=m/15; //every 15mins move of minute hand consume 1 min
+    set_duration_sec=m%15;
+    if(set_duration_sec<5) set_duration_sec=1;
+    else if(set_duration_sec==5&&set_duration_sec<10) set_duration_sec=2;
+    else if(set_duration_sec==10&&set_duration_sec<15) set_duration_sec=3;
     
     if(m%3==0) step_need=(m/3*10)+set_duration_min*3+set_duration_sec;
     else if(m%3==1) step_need=(m/3*10)+set_duration_min*3+set_duration_sec+3;
-    else step_need=(m/3*10)+set_duration_min*3+set_duration_sec+7;  
+    else step_need=(m/3*10)+set_duration_min*3+set_duration_sec+7;
+    step_need=-step_need; //reverse
   }
   motor.step(step_need);
 }
