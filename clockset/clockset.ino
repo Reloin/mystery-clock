@@ -1,6 +1,9 @@
 #include "Stepper.h"
 #include <NTPClient.h>
 #include <WiFiUdp.h>
+#include <ESP8266WiFi.h>//ESP9266连接WiFi的库
+#include <ESP8266HTTPClient.h>
+#include <WiFiClient.h>
 
 //Define pins for stepper motor and touch pole
 #define Stepper_pin1 D0
@@ -8,6 +11,10 @@
 #define Stepper_pin3 D5
 #define Stepper_pin4 D6
 #define Touch_pole D8
+
+//此处输入wifi名和wifi密码
+const char* ssid       = "Leong Home@unifi";//wifi名
+const char* password   = "0129405519";//wifi密码
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "asia.pool.ntp.org");
@@ -17,17 +24,32 @@ Stepper motor(stepsPerRevolution,Stepper_pin1,Stepper_pin2,Stepper_pin3,Stepper_
 
 void setup() {
   pinMode(Touch_pole, INPUT);
+
+  WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        delay(500);
+        Serial.println("Connecting to Wifi...");
+    }
+    
+  //初始化NTP客户端
+  timeClient.begin();
+  //计算我们时域的时间
+  timeClient.setTimeOffset(28800);
+  
+  Serial.begin(9600);
   Clockset();
 }
 
 void Clockset(){
-  motor.setSpeed(120);
+  motor.setSpeed(50);
   while(!digitalRead(Touch_pole)){
     motor.step(1); //move to 00:00
   }
   timeClient.update();
   h=timeClient.getHours();
   m=timeClient.getMinutes();
+  Serial.printf("time: %d : %d \n", h, m);
   h=h%12;
   if(h<6||(h==6&&m==0)){
     motor.setSpeed(120);
@@ -44,7 +66,7 @@ void Clockset(){
     
   }
   else{
-    motor.setSpeed(-120); //reverse
+    //motor.setSpeed(-120); //reverse
     h-=6;
     m=360-(h*60+m);
     set_duration_min=m/30; //every 30mins move of minute hand consume 1 min
