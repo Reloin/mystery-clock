@@ -2,8 +2,6 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>//ESP9266连接WiFi的库
-#include <ESP8266HTTPClient.h>
-#include <WiFiClient.h>
 
 //Define pins for stepper motor and touch pole
 #define Stepper_pin1 D0
@@ -19,40 +17,40 @@ const char* password   = "0129405519";//wifi密码
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "asia.pool.ntp.org");
 const int stepsPerRevolution = 50;
-int h,m,set_duration_min,set_duration_sec,step_need;
+int h,m,set_duration_min,set_duration_sec;
+int step_need = 0;
 Stepper motor(stepsPerRevolution,Stepper_pin1,Stepper_pin2,Stepper_pin3,Stepper_pin4);
 
 void setup() {
-  pinMode(Touch_pole, INPUT);
+  Serial.begin(115200);
+  //pinMode(Touch_pole, INPUT_PULLDOWN_16);
 
   WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        delay(500);
-        Serial.println("Connecting to Wifi...");
-    }
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.println("Connecting to Wifi...");
+  }
     
   //初始化NTP客户端
   timeClient.begin();
   //计算我们时域的时间
   timeClient.setTimeOffset(28800);
   
-  Serial.begin(9600);
+  motor.setSpeed(60);
   Clockset();
 }
 
 void Clockset(){
-  motor.setSpeed(50);
   while(!digitalRead(Touch_pole)){
     motor.step(1); //move to 00:00
+    yield();
   }
   timeClient.update();
-  h=timeClient.getHours();
-  m=timeClient.getMinutes();
+  h = timeClient.getHours() % 12;
+  m = timeClient.getMinutes();
   Serial.printf("time: %d : %d \n", h, m);
-  h=h%12;
   if(h<6||(h==6&&m==0)){
-    motor.setSpeed(60);
     m+=(h*60);
     set_duration_min=m/15; //every 15mins move of minute hand consume 1 min
     set_duration_sec=m%15;
@@ -63,10 +61,8 @@ void Clockset(){
     if(m%3==0) step_need=(m/3*10)+set_duration_min*3+set_duration_sec;
     else if(m%3==1) step_need=(m/3*10)+set_duration_min*3+set_duration_sec+3;
     else step_need=(m/3*10)+set_duration_min*3+set_duration_sec+7;  
-    
   }
   else{
-    motor.setSpeed(60)
     h-=6;
     m=360-(h*60+m);
     set_duration_min=m/15; //every 15mins move of minute hand consume 1 min
@@ -78,9 +74,13 @@ void Clockset(){
     if(m%3==0) step_need=(m/3*10)+set_duration_min*3+set_duration_sec;
     else if(m%3==1) step_need=(m/3*10)+set_duration_min*3+set_duration_sec+3;
     else step_need=(m/3*10)+set_duration_min*3+set_duration_sec+7;
-    step_need=-step_need; //reverse
+    //step_need=-step_need; //reverse
   }
-  motor.step(step_need);
+  Serial.printf("Steps needed: %d\n", step_need);
+  while(step_need != 0){
+    motor.step(1);
+    yield();
+  }
 }
 
 void loop() {
