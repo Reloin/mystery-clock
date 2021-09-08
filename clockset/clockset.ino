@@ -74,12 +74,22 @@ void Clockset(){
     if(m%3==0) step_need=(m/3*10)+set_duration_min*3+set_duration_sec;
     else if(m%3==1) step_need=(m/3*10)+set_duration_min*3+set_duration_sec+3;
     else step_need=(m/3*10)+set_duration_min*3+set_duration_sec+7;
-    //step_need=-step_need; //reverse
+    step_need=-step_need; //reverse
   }
   Serial.printf("Steps needed: %d\n", step_need);
+  if(step_need>0){
   while(step_need != 0){
     motor.step(1);
+    step_need--;
     yield();
+  }
+  }
+  else{
+    while(step_need != 0){
+    motor.step(-1);
+    step_need++;
+    yield();
+  }
   }
 }
 
