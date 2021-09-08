@@ -2,28 +2,28 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include <ESP8266WiFi.h>//ESP9266连接WiFi的库
-#include <ESP8266HTTPClient.h>
-#include <WiFiClient.h>
 
 //Define pins for stepper motor and touch pole
 #define Stepper_pin1 D0
 #define Stepper_pin2 D4
 #define Stepper_pin3 D5
 #define Stepper_pin4 D6
-#define Touch_pole 3
+#define Touch_pole D8
 
 //此处输入wifi名和wifi密码
-const char* ssid = "Leong Home@unifi";//wifi名
+const char* ssid       = "Leong Home@unifi";//wifi名
 const char* password   = "0129405519";//wifi密码
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "asia.pool.ntp.org");
 const int stepsPerRevolution = 50;
-int h,m,set_duration_min,set_duration_min2,set_duration_sec,step_need;
+int h,m,set_duration_min,set_duration_sec;
+int step_need = 0;
 Stepper motor(stepsPerRevolution,Stepper_pin1,Stepper_pin2,Stepper_pin3,Stepper_pin4);
 
 void setup() {
-  //pinMode(Touch_pole, INPUT_PULLDOWN);
+  Serial.begin(115200);
+  //pinMode(Touch_pole, INPUT_PULLDOWN_16);
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)
@@ -37,22 +37,18 @@ void setup() {
   //计算我们时域的时间
   timeClient.setTimeOffset(28800);
   
-  Serial.begin(9600);
+  motor.setSpeed(60);
   Clockset();
 }
 
 void Clockset(){
-  motor.setSpeed(50);
-  /*
   while(!digitalRead(Touch_pole)){
     motor.step(1); //move to 00:00
-    delay(1);
-  }*/
+    yield();
+  }
   timeClient.update();
-  h=timeClient.getHours();
-  m=timeClient.getMinutes();
-  delay(100);
-  h=h%12;
+  h = timeClient.getHours() % 12;
+  m = timeClient.getMinutes();
   Serial.printf("time: %d : %d \n", h, m);
   if(h<6||(h==6&&m==0)){
     m+=(h*60);
@@ -92,8 +88,20 @@ void Clockset(){
     step_need=-step_need; //reverse
   }
   Serial.printf("Steps needed: %d\n", step_need);
-  motor.step(step_need);
-  delay(500);
+  if(step_need>0){
+  while(step_need != 0){
+    motor.step(1);
+    step_need--;
+    yield();
+  }
+  }
+  else{
+    while(step_need != 0){
+    motor.step(-1);
+    step_need++;
+    yield();
+  }
+  }
 }
 
 void loop() {
