@@ -66,6 +66,7 @@ static bool powerSave=false;
 #define MOON 7
 #define WIFI 8
 #define ALARM 9
+#define UPDATE 10
 
 uint8_t getSymbol(String weather_icon)
 {
@@ -162,7 +163,19 @@ void drawWeatherSymbol(u8g2_uint_t x, u8g2_uint_t y, uint8_t symbol)
       u8g2.setFont(u8g2_font_open_iconic_embedded_4x_t);
       u8g2.drawGlyph(x, y, 65);
       break;
+     case UPDATE:
+      u8g2.setFont(u8g2_font_open_iconic_embedded_4x_t);
+      u8g2.drawGlyph(x, y, 79);
+      break;
   }
+}
+
+void drawUpdate(){
+  t_symbol=UPDATE;
+  drawWeatherSymbol(55,40,t_symbol);
+  u8g2.setFont(u8g2_font_shylock_nbp_tf);
+  u8g2.setCursor(25, 55);
+  u8g2.print("UPDATE?");
 }
 
 void drawConnection(){
@@ -295,6 +308,10 @@ void draw(int s)
      u8g2.setPowerSave(0);
      drawAlarmON();
      break;
+    case 7:
+     screen=4;
+     drawUpdate();
+     break;
      
   }
   u8g2.sendBuffer();        // transfer internal memory to the display
@@ -321,6 +338,9 @@ int checkTime(){
 }
 void ICACHE_RAM_ATTR setalarm(){
   draw(3);
+}
+void ICACHE_RAM_ATTR updatetime(){
+  //按下button这里会校对时间
 }
 void alarm(){
   triggerMelody(10);
@@ -438,12 +458,22 @@ void loop() {
   //屏幕亮起时移动rocker
   if ((pos!=0)&&(idle==1)&&(millis()-stime<120*1000)){
     if (screen==1){
+      if(pos==1){draw(7);attachInterrupt(digitalPinToInterrupt(13),updatetime,FALLING);}
+      else if(pos==2){
       draw(2);
-      attachInterrupt(digitalPinToInterrupt(13),setalarm,FALLING);
+      attachInterrupt(digitalPinToInterrupt(13),setalarm,FALLING);}
     }
-    else if (screen==2){
-       draw(1);
-       detachInterrupt(13);
+     else if (screen==2){
+      detachInterrupt(13);
+      if(pos==1)draw(1);
+      else if (pos==2){draw(7);attachInterrupt(digitalPinToInterrupt(13),updatetime,FALLING);}
+    }
+    else if(screen=4){
+      detachInterrupt(13);
+      if(pos==1){
+      draw(2);
+      attachInterrupt(digitalPinToInterrupt(13),setalarm,FALLING);}
+      else if(pos==2)draw(1);
     }
     else if (screen=3){
      detachInterrupt(13);
