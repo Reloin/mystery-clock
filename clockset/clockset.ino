@@ -49,6 +49,7 @@ void Clockset(){
   timeClient.update();
   h = timeClient.getHours() % 12;
   m = timeClient.getMinutes();
+  delay(1000);
   Serial.printf("time: %d : %d \n", h, m);
   if(h<6||(h==6&&m==0)){
     m+=(h*60);

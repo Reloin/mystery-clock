@@ -17,13 +17,11 @@ const char* password   = "0129405519";//wifi密码
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "asia.pool.ntp.org");
 const int stepsPerRevolution = 50;
-int h,m,set_duration_min,set_duration_sec;
-int step_need = 0;
 Stepper motor(stepsPerRevolution,Stepper_pin1,Stepper_pin2,Stepper_pin3,Stepper_pin4);
 
 void setup() {
   Serial.begin(115200);
-  //pinMode(Touch_pole, INPUT_PULLDOWN_16);
+  pinMode(Touch_pole, INPUT_PULLDOWN_16);
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)
@@ -42,10 +40,14 @@ void setup() {
 }
 
 void Clockset(){
+  int h,m,set_duration_min,set_duration_sec;
+  int step_need = 0;
+  Serial.println("Spin to init position");
   while(!digitalRead(Touch_pole)){
     motor.step(1); //move to 00:00
     yield();
   }
+  delay(1000);
   timeClient.update();
   h = timeClient.getHours() % 12;
   m = timeClient.getMinutes();
@@ -53,7 +55,7 @@ void Clockset(){
   if(h<6||(h==6&&m==0)){
     m+=(h*60);
     set_duration_min=m/45; //every 45mins move of minute hand consume 3min=10steps(no error)
-    set_duration_min2=(m%45)/15; 
+    int set_duration_min2=(m%45)/15; 
     if (set_duration_min2==0) set_duration_min2=0;
     else if (set_duration_min2==1) set_duration_min2=3; //every first 15mins move of minute hand consume 3steps (6seconds error)
     else if(set_duration_min2==2) set_duration_min2=7; //every second 15mins move of minute hand consume 7stepsv(6 seconds error) 
@@ -72,7 +74,7 @@ void Clockset(){
     h-=6;
     m=360-(h*60+m);
     set_duration_min=m/45; //every 45mins move of minute hand consume 3min=10steps(no error)
-    set_duration_min2=(m%45)/15; 
+    int set_duration_min2=(m%45)/15; 
     if (set_duration_min2==0) set_duration_min2=0;
     else if (set_duration_min2==1) set_duration_min2=3; //every first 15mins move of minute hand consume 3steps (6seconds error)
     else if(set_duration_min2==2) set_duration_min2=7; //every second 15mins move of minute hand consume 7stepsv(6 seconds error) 
