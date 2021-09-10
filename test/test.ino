@@ -17,8 +17,6 @@ const char* password   = "0129405519";//wifi密码
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "asia.pool.ntp.org");
 const int stepsPerRevolution = 50;
-int h,m,set_duration_min,set_duration_sec;
-int step_need = 0;
 Stepper motor(stepsPerRevolution,Stepper_pin1,Stepper_pin2,Stepper_pin3,Stepper_pin4);
 
 void setup() {
@@ -42,10 +40,15 @@ void setup() {
 }
 
 void Clockset(){
+  
+  int h,m,set_duration_min,set_duration_sec;
+  int step_need = 0;
+  Serial.println("Move to 12");
   while(!digitalRead(Touch_pole)){
     motor.step(1); //move to 00:00
     yield();
   }
+  Serial.println("Getting time");
   timeClient.update();
   h = timeClient.getHours() % 12;
   m = timeClient.getMinutes();
