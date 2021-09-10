@@ -21,7 +21,7 @@ Stepper motor(stepsPerRevolution,Stepper_pin1,Stepper_pin2,Stepper_pin3,Stepper_
 
 void setup() {
   Serial.begin(115200);
-  //pinMode(Touch_pole, INPUT_PULLDOWN_16);
+  //pinMode(Touch_pole, INPUT);
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)
