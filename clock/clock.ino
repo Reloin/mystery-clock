@@ -177,6 +177,13 @@ void drawUpdate(){
   u8g2.setCursor(25, 55);
   u8g2.print("UPDATE?");
 }
+void drawUpdate2(){
+  t_symbol=UPDATE;
+  drawWeatherSymbol(55,40,t_symbol);
+  u8g2.setFont(u8g2_font_shylock_nbp_tf);
+  u8g2.setCursor(25, 55);
+  u8g2.print("UPDATING...");
+}
 
 void drawConnection(){
   t_symbol=WIFI;
@@ -312,6 +319,10 @@ void draw(int s)
      screen=4;
      drawUpdate();
      break;
+    case 8:
+     screen=5;
+     drawUpdate2();
+     break;
      
   }
   u8g2.sendBuffer();        // transfer internal memory to the display
@@ -340,7 +351,7 @@ void ICACHE_RAM_ATTR setalarm(){
   draw(3);
 }
 void ICACHE_RAM_ATTR updatetime(){
-  //按下button这里会校对时间
+  draw(8);
 }
 void alarm(){
   triggerMelody(10);
@@ -529,6 +540,10 @@ void loop() {
      }
       draw(2);
       flagh=0;
+     }
+     else if (screen==5){
+       //校对函数
+       draw(7);//放最后一行
      }
   stime=millis();
   idle=1;
