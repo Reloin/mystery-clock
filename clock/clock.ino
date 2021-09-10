@@ -468,6 +468,64 @@ void loop() {
   stime=millis();
   idle=1;
   }
+  //运行校对
+  if (screen==5){
+       //校对函数
+        int set_duration_min,set_duration_sec;
+        int step_need = 0;
+        Serial.println("Move to 12");
+        while(!digitalRead(Touch_pole)){
+          motor.step(1); //move to 00:00
+          yield();
+        }
+        Serial.println("Getting time");
+        timeClient.update();
+        hour = timeClient.getHours() % 12;
+        minute = timeClient.getMinutes();
+        Serial.printf("time: %d : %d \n", hour, minute);
+        if(hour<6||(hour==6&&minute==0)){
+          minute+=(hour*60);
+          set_duration_min=minute/15; //every 15mins move of minute hand consume 1 min
+          set_duration_sec=minute%15;
+          if(set_duration_sec<5) set_duration_sec=1;
+          else if(set_duration_sec==5&&set_duration_sec<10) set_duration_sec=2;
+          else if(set_duration_sec==10&&set_duration_sec<15) set_duration_sec=3;
+          
+          if(minute%3==0) step_need=(minute/3*10);
+          else if(minute%3==1) step_need=(minute/3*10)+3;
+          else step_need=(minute/3*10)+7;  
+        }
+        else{
+          hour-=6;
+          minute=360-(hour*60+minute);
+          set_duration_min=minute/15; //every 15mins move of minute hand consume 1 min
+          set_duration_sec=minute%15;
+          if(set_duration_sec<5) set_duration_sec=1;
+          else if(set_duration_sec==5&&set_duration_sec<10) set_duration_sec=2;
+          else if(set_duration_sec==10&&set_duration_sec<15) set_duration_sec=3;
+          
+          if(minute%3==0) step_need=(minute/3*10);
+          else if(minute%3==1) step_need=(minute/3*10)+3;
+          else step_need=(minute/3*10)+7; 
+          step_need=-step_need; //reverse
+        }
+        Serial.printf("Steps needed: %d\n", step_need);
+        if(step_need>0){
+        while(step_need != 0){
+          motor.step(1);
+          step_need--;
+          yield();
+        }
+        }
+        else{
+          while(step_need != 0){
+          motor.step(-1);
+          step_need++;
+          yield();
+        }
+        }
+        draw(7);//放最后一行
+  }
   //屏幕亮起时移动rocker
   if ((pos!=0)&&(idle==1)&&(millis()-stime<120*1000)){
     if (screen==1){
@@ -543,63 +601,7 @@ void loop() {
       draw(2);
       flagh=0;
      }
-     else if (screen==5){
-       //校对函数
-        int set_duration_min,set_duration_sec;
-        int step_need = 0;
-        Serial.println("Move to 12");
-        while(!digitalRead(Touch_pole)){
-          motor.step(1); //move to 00:00
-          yield();
-        }
-        Serial.println("Getting time");
-        timeClient.update();
-        hour = timeClient.getHours() % 12;
-        minute = timeClient.getMinutes();
-        Serial.printf("time: %d : %d \n", hour, minute);
-        if(hour<6||(hour==6&&minute==0)){
-          minute+=(hour*60);
-          set_duration_min=minute/15; //every 15mins move of minute hand consume 1 min
-          set_duration_sec=minute%15;
-          if(set_duration_sec<5) set_duration_sec=1;
-          else if(set_duration_sec==5&&set_duration_sec<10) set_duration_sec=2;
-          else if(set_duration_sec==10&&set_duration_sec<15) set_duration_sec=3;
-          
-          if(minute%3==0) step_need=(minute/3*10);
-          else if(minute%3==1) step_need=(minute/3*10)+3;
-          else step_need=(minute/3*10)+7;  
-        }
-        else{
-          hour-=6;
-          minute=360-(hour*60+minute);
-          set_duration_min=minute/15; //every 15mins move of minute hand consume 1 min
-          set_duration_sec=minute%15;
-          if(set_duration_sec<5) set_duration_sec=1;
-          else if(set_duration_sec==5&&set_duration_sec<10) set_duration_sec=2;
-          else if(set_duration_sec==10&&set_duration_sec<15) set_duration_sec=3;
-          
-          if(minute%3==0) step_need=(minute/3*10);
-          else if(minute%3==1) step_need=(minute/3*10)+3;
-          else step_need=(minute/3*10)+7; 
-          step_need=-step_need; //reverse
-        }
-        Serial.printf("Steps needed: %d\n", step_need);
-        if(step_need>0){
-        while(step_need != 0){
-          motor.step(1);
-          step_need--;
-          yield();
-        }
-        }
-        else{
-          while(step_need != 0){
-          motor.step(-1);
-          step_need++;
-          yield();
-        }
-        }
-        draw(7);//放最后一行
-  }
+
   stime=millis();
   idle=1;
   delay(300);
